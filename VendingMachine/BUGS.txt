@@ -1,0 +1,129 @@
+# BUGS
+
+## Bug 1: Invalid Array Index in Constructor
+
+### Observed Failure
+The VendingMachine tests produced an `ArrayIndexOutOfBoundsException` when a new vending machine was created.
+
+The error stated:
+
+`Index 4 out of bounds for length 4`
+
+### Test That Exposed It
+`newMachineHasZeroBalance`
+
+The error also prevented the other VendingMachine tests from running because a new VendingMachine object is created before each test.
+
+### Source-Code Fault
+The constructor loop used:
+
+```java
+for (int i = 0; i <= NUM_SLOTS; i++)
+```
+
+The array has a length of 4, so its valid indexes are 0 through 3. The `<=` allowed the loop to reach index 4.
+
+### How I Diagnosed the Fault
+The stack trace pointed to the VendingMachine constructor. I checked the loop and found that it attempted to access `itemArray[4]`, which is outside the array.
+
+### Correction
+I changed the loop condition from:
+
+```java
+i <= NUM_SLOTS
+```
+
+to:
+
+```java
+i < NUM_SLOTS
+```
+
+This prevents the loop from accessing an invalid array index.
+
+---
+
+## Bug 2: Valid Money Amounts Below 1 Were Rejected
+
+### Observed Failure
+Valid money amounts below 1.00 caused a `VendingMachineException`.
+
+For example, inserting 0.00 or 0.50 was rejected even though the documented precondition allows amounts greater than or equal to 0.
+
+### Test That Exposed It
+`insertZeroIsAllowed`
+
+The `purchaseUsesBalance` parameterized test also exposed the problem when using balances below 1.00.
+
+### Source-Code Fault
+The `insertMoney()` method used:
+
+```java
+if (amount < 1)
+```
+
+This caused all amounts below 1.00 to be treated as invalid, including valid nonnegative amounts.
+
+### How I Diagnosed the Fault
+I compared the values that caused the tests to fail with the documented precondition for `insertMoney()`. The specification states that `amount >= 0`, but the method was checking whether the amount was less than 1.
+
+### Correction
+I changed:
+
+```java
+if (amount < 1)
+```
+
+to:
+
+```java
+if (amount < 0)
+```
+
+This allows zero and positive amounts while still rejecting negative amounts.
+
+---
+
+## Bug 3: Invalid Purchases Returned True
+
+### Observed Failure
+`purchaseFromEmptySlotFails` expected `false`, but `makePurchase()` returned `true` when attempting to purchase from an empty slot.
+
+`purchaseWithLowBalanceFails` also expected `false`, but the method returned `true` when the balance was below the item's price.
+
+The `purchaseUsesBalance` parameterized test showed the same problem. Balances of 0.00, 0.50, and 1.99 were expected to return `false`, but the method returned `true`.
+
+### Tests That Exposed It
+- `purchaseFromEmptySlotFails`
+- `purchaseWithLowBalanceFails`
+- `purchaseUsesBalance`
+
+### Source-Code Fault
+The condition in `makePurchase()` did not correctly require both a non-empty slot and a sufficient balance before allowing a purchase.
+
+A purchase should only succeed when an item exists and the balance is greater than or equal to the item's price.
+
+### How I Diagnosed the Fault
+I compared the failing results with the expected behavior of `makePurchase()`.
+
+The tests showed that:
+
+- A purchase from an empty slot incorrectly returned `true`.
+- A purchase with insufficient money incorrectly returned `true`.
+- A purchase with exactly enough money returned `true` as expected.
+- A purchase with more than enough money returned `true` as expected.
+
+This showed that the problem was in the condition used to determine whether a purchase should succeed.
+
+### Correction
+I corrected the purchase condition so that both requirements must be true:
+
+```java
+if ((item != null) && (this.balance >= item.getPrice())) {
+    removeItem(code);
+    this.balance -= item.getPrice();
+    returnCode = true;
+}
+```
+
+The method now returns `false` when the slot is empty or the balance is too low and returns `true` only when the purchase can be completed.
