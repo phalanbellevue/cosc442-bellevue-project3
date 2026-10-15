@@ -14,8 +14,8 @@ public class VendingMachineExceptionTest {
     @Test
     public void defaultExceptionHasNoMessage() {
         // Arrange and Act
-        VendingMachineException exception =
-                new VendingMachineException();
+        VendingMachineExceptionAI exception =
+                new VendingMachineExceptionAI();
 
         // Assert
         assertNull(exception.getMessage());
@@ -30,8 +30,8 @@ public class VendingMachineExceptionTest {
         String message = "Invalid operation";
 
         // Act
-        VendingMachineException exception =
-                new VendingMachineException(message);
+        VendingMachineExceptionAI exception =
+                new VendingMachineExceptionAI(message);
 
         // Assert
         assertEquals(message, exception.getMessage());

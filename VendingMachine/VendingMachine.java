@@ -51,7 +51,7 @@ public class VendingMachine {
 	protected double balance;
 
 	// Array items in the vending machine
-	private VendingMachineItem[] itemArray;
+	private VendingMachineItemAI[] itemArray;
 
 	/**
 	 * Default constructor for the vending machine. It sets all the entries in
@@ -59,7 +59,7 @@ public class VendingMachine {
 	 * Postcondition: all entries in itemArray are null, balance set to be 0
 	 */
 	public VendingMachine() {
-		itemArray = new VendingMachineItem[NUM_SLOTS];
+		itemArray = new VendingMachineItemAI[NUM_SLOTS];
 		for (int i = 0; i < NUM_SLOTS; i++) {
 			itemArray[i] = null;
 		}
@@ -74,9 +74,9 @@ public class VendingMachine {
 	 * 
 	 * @param code The code for the slot.
 	 * @return The slot index
-	 * @throws VendingMachineException
+	 * @throws VendingMachineExceptionAI
 	 */
-	private int getSlotIndex(String code) throws VendingMachineException {
+	private int getSlotIndex(String code) throws VendingMachineExceptionAI {
 		if (code.equals(A_CODE)) {
 			return 0;
 		} else if (code.equals(B_CODE)) {
@@ -86,7 +86,7 @@ public class VendingMachine {
 		} else if (code.equals(D_CODE)) {
 			return 3;
 		} else {
-			throw new VendingMachineException(VendingMachine.INVALID_CODE_MESSAGE);
+			throw new VendingMachineExceptionAI(VendingMachine.INVALID_CODE_MESSAGE);
 		}
 	}
 
@@ -100,16 +100,16 @@ public class VendingMachine {
 	 *             The vending machine item object to add to the vending machine
 	 * @param code
 	 *             The code of where this item should be in the vending machine
-	 * @throws VendingMachineException under the following conditions:
+	 * @throws VendingMachineExceptionAI under the following conditions:
 	 *                                 1. If you add an item to a slot that is
 	 *                                 already occupied.
 	 *                                 2. If you add an item with an invalid code
 	 */
-	public void addItem(VendingMachineItem item, String code)
-			throws VendingMachineException {
+	public void addItem(VendingMachineItemAI item, String code)
+			throws VendingMachineExceptionAI {
 		int slotIndex = getSlotIndex(code);
 		if (itemArray[slotIndex] != null) {
-			throw new VendingMachineException(SLOT_MESSAGE + code
+			throw new VendingMachineExceptionAI(SLOT_MESSAGE + code
 					+ ALREADY_OCCUPIED_MESSAGE);
 		} else {
 			itemArray[slotIndex] = item;
@@ -121,9 +121,9 @@ public class VendingMachine {
 	 * 
 	 * @param code The code for the the slot in the vending machine eg. "A"
 	 * @return The item occupying the slot with the given code
-	 * @throws VendingMachineException if the code is invalid
+	 * @throws VendingMachineExceptionAI if the code is invalid
 	 */
-	protected VendingMachineItem getItem(String code) throws VendingMachineException {
+	protected VendingMachineItemAI getItem(String code) throws VendingMachineExceptionAI {
 		int slotIndex = getSlotIndex(code);
 		return itemArray[slotIndex];
 	}
@@ -135,15 +135,15 @@ public class VendingMachine {
 	 * 
 	 * @param code The code eg. "A" of the item in the vending machine
 	 * @return The item occupying the slot with the given code.
-	 * @throws VendingMachineException If the slot at the specified code is empty
+	 * @throws VendingMachineExceptionAI If the slot at the specified code is empty
 	 *                                 and if the code is invalid
 	 */
-	public VendingMachineItem removeItem(String code) throws VendingMachineException {
+	public VendingMachineItemAI removeItem(String code) throws VendingMachineExceptionAI {
 		int slotIndex = getSlotIndex(code);
-		VendingMachineItem item = itemArray[slotIndex];
+		VendingMachineItemAI item = itemArray[slotIndex];
 		itemArray[slotIndex] = null;
 		if (item == null) {
-			throw new VendingMachineException(SLOT_MESSAGE + code + IS_EMPTY_MESSAGE);
+			throw new VendingMachineExceptionAI(SLOT_MESSAGE + code + IS_EMPTY_MESSAGE);
 		}
 		return item;
 	}
@@ -154,12 +154,12 @@ public class VendingMachine {
 	 * Postcondition: balance is now the previous balance + amount.
 	 * 
 	 * @param amount The amount of money to put in the vending machine
-	 * @throws VendingMachineException Throws a VendingMachineException if the
+	 * @throws VendingMachineExceptionAI Throws a VendingMachineException if the
 	 *                                 amount is < 0
 	 */
-	public void insertMoney(double amount) throws VendingMachineException {
+	public void insertMoney(double amount) throws VendingMachineExceptionAI {
 		if (amount < 0)
-			throw new VendingMachineException(VendingMachine.INVALID_AMOUNT_MESSAGE);
+			throw new VendingMachineExceptionAI(VendingMachine.INVALID_AMOUNT_MESSAGE);
 		this.balance += amount;
 	}
 
@@ -192,7 +192,7 @@ public class VendingMachine {
 	 */
 	public boolean makePurchase(String code) {
 		boolean returnCode = false;
-		VendingMachineItem item = getItem(code);
+		VendingMachineItemAI item = getItem(code);
 		if ((item != null) && (this.balance >= item.getPrice())) { 
 			removeItem(code);
 			this.balance -= item.getPrice();

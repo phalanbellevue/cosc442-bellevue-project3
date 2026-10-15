@@ -20,8 +20,8 @@ public class VendingMachineItemTest {
         double price = 1.50;
 
         // Act
-        VendingMachineItem item =
-                new VendingMachineItem(name, price);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI(name, price);
 
         // Assert
         assertEquals("Chips", item.getName());
@@ -38,8 +38,8 @@ public class VendingMachineItemTest {
         double price = 0.0;
 
         // Act
-        VendingMachineItem item =
-                new VendingMachineItem(name, price);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI(name, price);
 
         // Assert
         assertEquals(0.0, item.getPrice(), DELTA);
@@ -56,8 +56,8 @@ public class VendingMachineItemTest {
 
         // Act and Assert
         assertThrows(
-                VendingMachineException.class,
-                () -> new VendingMachineItem(name, price));
+                VendingMachineExceptionAI.class,
+                () -> new VendingMachineItemAI(name, price));
     }
 
     /**
@@ -66,8 +66,8 @@ public class VendingMachineItemTest {
     @Test
     public void getNameReturnsName() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Water", 1.25);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Water", 1.25);
 
         // Act
         String name = item.getName();
@@ -82,8 +82,8 @@ public class VendingMachineItemTest {
     @Test
     public void getPriceReturnsPrice() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Sandwich", 2.75);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Sandwich", 2.75);
 
         // Act
         double price = item.getPrice();

@@ -4,7 +4,7 @@
  * add an item that is already in a certain spot, etc.
  *
  */
-public class VendingMachineException extends RuntimeException {
+public class VendingMachineExceptionAI extends RuntimeException {
 	// Leave the line below in your code. You won't need to know what it is for
 	// this course.
 	private static final long serialVersionUID = 1L;
@@ -12,7 +12,7 @@ public class VendingMachineException extends RuntimeException {
 	/**
 	 * Default constructor
 	 */
-	public VendingMachineException() {
+	public VendingMachineExceptionAI() {
 
 	}
 
@@ -21,7 +21,7 @@ public class VendingMachineException extends RuntimeException {
 	 * 
 	 * @param reason The error message for the exception
 	 */
-	public VendingMachineException(String reason) {
+	public VendingMachineExceptionAI(String reason) {
 		super(reason);
 	}
 }

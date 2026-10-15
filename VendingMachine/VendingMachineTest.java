@@ -17,14 +17,14 @@ public class VendingMachineTest {
 
     private static final double DELTA = 0.001;
 
-    private VendingMachine machine;
+    private VendingMachineAI machine;
 
     /**
      * Creates a new vending machine before each test.
      */
     @BeforeEach
     public void setUp() {
-        machine = new VendingMachine();
+        machine = new VendingMachineAI();
     }
 
     /**
@@ -58,8 +58,8 @@ public class VendingMachineTest {
     @Test
     public void addItemStoresItem() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Chips", 1.50);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Chips", 1.50);
 
         // Act
         machine.addItem(item, "A");
@@ -74,16 +74,16 @@ public class VendingMachineTest {
     @Test
     public void addItemToFullSlotThrowsException() {
         // Arrange
-        VendingMachineItem firstItem =
-                new VendingMachineItem("Chips", 1.50);
-        VendingMachineItem secondItem =
-                new VendingMachineItem("Soda", 2.00);
+        VendingMachineItemAI firstItem =
+                new VendingMachineItemAI("Chips", 1.50);
+        VendingMachineItemAI secondItem =
+                new VendingMachineItemAI("Soda", 2.00);
 
         machine.addItem(firstItem, "A");
 
         // Act and Assert
         assertThrows(
-                VendingMachineException.class,
+                VendingMachineExceptionAI.class,
                 () -> machine.addItem(secondItem, "A"));
     }
 
@@ -93,12 +93,12 @@ public class VendingMachineTest {
     @Test
     public void addItemWithBadCodeThrowsException() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Chips", 1.50);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Chips", 1.50);
 
         // Act and Assert
         assertThrows(
-                VendingMachineException.class,
+                VendingMachineExceptionAI.class,
                 () -> machine.addItem(item, "E"));
     }
 
@@ -108,13 +108,13 @@ public class VendingMachineTest {
     @Test
     public void getItemReturnsItem() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Water", 1.00);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Water", 1.00);
 
         machine.addItem(item, "B");
 
         // Act
-        VendingMachineItem result = machine.getItem("B");
+        VendingMachineItemAI result = machine.getItem("B");
 
         // Assert
         assertSame(item, result);
@@ -130,7 +130,7 @@ public class VendingMachineTest {
 
         // Act and Assert
         assertThrows(
-                VendingMachineException.class,
+                VendingMachineExceptionAI.class,
                 () -> machine.getItem(invalidCode));
     }
 
@@ -140,13 +140,13 @@ public class VendingMachineTest {
     @Test
     public void removeItemReturnsItem() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Candy", 1.25);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Candy", 1.25);
 
         machine.addItem(item, "C");
 
         // Act
-        VendingMachineItem result = machine.removeItem("C");
+        VendingMachineItemAI result = machine.removeItem("C");
 
         // Assert
         assertSame(item, result);
@@ -158,8 +158,8 @@ public class VendingMachineTest {
     @Test
     public void removeItemEmptiesSlot() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Candy", 1.25);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Candy", 1.25);
 
         machine.addItem(item, "C");
 
@@ -180,7 +180,7 @@ public class VendingMachineTest {
 
         // Act and Assert
         assertThrows(
-                VendingMachineException.class,
+                VendingMachineExceptionAI.class,
                 () -> machine.removeItem(emptyCode));
     }
 
@@ -224,7 +224,7 @@ public class VendingMachineTest {
 
         // Act and Assert
         assertThrows(
-                VendingMachineException.class,
+                VendingMachineExceptionAI.class,
                 () -> machine.insertMoney(amount));
     }
 
@@ -249,8 +249,8 @@ public class VendingMachineTest {
     @Test
     public void purchaseWithLowBalanceFails() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Soda", 2.00);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Soda", 2.00);
 
         machine.addItem(item, "A");
         machine.insertMoney(1.00);
@@ -268,8 +268,8 @@ public class VendingMachineTest {
     @Test
     public void purchaseWithExactBalanceSucceeds() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Soda", 2.00);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Soda", 2.00);
 
         machine.addItem(item, "A");
         machine.insertMoney(2.00);
@@ -287,8 +287,8 @@ public class VendingMachineTest {
     @Test
     public void purchaseRemovesItem() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Soda", 2.00);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Soda", 2.00);
 
         machine.addItem(item, "A");
         machine.insertMoney(2.00);
@@ -306,8 +306,8 @@ public class VendingMachineTest {
     @Test
     public void purchaseDeductsPrice() {
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Soda", 2.00);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Soda", 2.00);
 
         machine.addItem(item, "A");
         machine.insertMoney(5.00);
@@ -352,8 +352,8 @@ public class VendingMachineTest {
             double expectedBalance) {
 
         // Arrange
-        VendingMachineItem item =
-                new VendingMachineItem("Soda", 2.00);
+        VendingMachineItemAI item =
+                new VendingMachineItemAI("Soda", 2.00);
 
         machine.addItem(item, "B");
         machine.insertMoney(balance);
