@@ -1,0 +1,10 @@
+Overall, the AI generated tests were decent, it did what it needed to do and got VendingMachine and VendingMachineItem to 100% coverage.
+My manually written suite from Project 2/Task 1 was stronger in terms of quality, since I covered edge cases the AI missed, though the AI did test exceptions that I hadn't.
+Using coverage guided prompting did help, pushing the AI to test edge cases and negative amounts it had skipped before.
+The main weakness was that the AI's tests lacked proper Arrange/Act/Assert structure, which made the assertions harder to read and verify.
+This exercise shows both the strengths and limitations of using AI for test generation. It can save time, but you shouldn't rely on it to produce quality work on its own.
+
+
+
+
+
