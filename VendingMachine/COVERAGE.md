@@ -1,6 +1,6 @@
 ## Initial Coverage Results
 
-Had 100% Coverage in Project 2 for VendingMachine, no additional test cases were needed
+Had 100% Coverage in Project 2 for VendingMachine.java, no additional test cases were needed
 
 Vending Machine Coverage:
 
